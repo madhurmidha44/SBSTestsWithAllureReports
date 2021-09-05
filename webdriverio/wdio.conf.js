@@ -1,4 +1,5 @@
-const allure = require('allure-commandline')
+
+const allure = require('allure-commandline');
 exports.config = {
     //
     // ====================
@@ -21,9 +22,17 @@ exports.config = {
     // then the current working directory is where your `package.json` resides, so `wdio`
     // will be called from there.
     //
+
     specs: [
         './test/specs/**/*.js'
     ],
+    suites: {
+        sbsAutomationTestSuite: [
+            './test/specs/sbsFrontendTests.js',
+            './test/specs/sbsApiTests.js'
+        ]
+    },
+    
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
@@ -44,7 +53,7 @@ exports.config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 2,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -55,7 +64,7 @@ exports.config = {
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        maxInstances: 5,
+        maxInstances: 2,
         //
         browserName: 'chrome',
         acceptInsecureCerts: true
@@ -133,13 +142,7 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: ['spec'],
-    reporters: [['allure', {
-        outputDir: 'allure-results',
-        disableWebdriverScreenshotsReporting: false,
-    }]],
-
-    
+    //reporters: ['spec'],
     
     //
     // Options to be passed to Mocha.
@@ -273,13 +276,19 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {<Object>} results object containing test results
      */
+
+     reporters: [['allure', {
+        outputDir: 'allure-results',
+        disableWebdriverScreenshotsReporting: false,
+    }]],
+
      onComplete: function(exitCode, config, capabilities, results) {
         const reportError = new Error('Could not generate Allure report')
-        const generation = allure(['generate', 'allure-results', '--clean'])
+        const generation = allure(['serve', 'allure-results'])
         return new Promise((resolve, reject) => {
             const generationTimeout = setTimeout(
                 () => reject(reportError),
-                5000)
+                50000)
 
             generation.on('exit', function(exitCode) {
                 clearTimeout(generationTimeout)
@@ -292,6 +301,7 @@ exports.config = {
                 resolve()
             })
         })
+        
     },
     /**
     * Gets executed when a refresh happens.

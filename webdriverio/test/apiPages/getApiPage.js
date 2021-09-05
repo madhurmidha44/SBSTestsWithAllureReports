@@ -1,5 +1,6 @@
 //creating object of core library to utilise its methods
 const coreLibraryObj = require('../coreLibrary/coreLibrary');
+const allureReporter = require('@wdio/allure-reporter').default;
 
 class GetApiPage{
 
@@ -9,7 +10,7 @@ retrieveResponseOfGetApiWithOnlyEndpoint(endpoint)
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "GET", endpoint, false ); // false for synchronous request
     xmlHttp.send( null );
-    console.log("Response of Get API is: "+ xmlHttp.responseText);
+    allureReporter.addStep("Response of Get API is: "+ xmlHttp.responseText);
     return xmlHttp.responseText;
 }
 
@@ -47,13 +48,13 @@ retrieveAllMp3FilesFromResponseInArray(response)
         {
             console.error("No Mp3 files retrieved from the response of Get API. Response received is "+response);
         }
-    console.log(".mp3 files in response of API are: "+nameOfMp3FilesArray);
+    allureReporter.addStep(".mp3 files in response of API are: "+nameOfMp3FilesArray);
     return nameOfMp3FilesArray;
 }
 
 validateGivenMp3FileExistsInArrayOfRetrievedFiles(arrayOfRetrievedMp3Files, expectedMp3FilesArray)
 {
-    console.log("checking expected values in retrieved .mp3 files from the response")
+    allureReporter.addStep("checking expected values in retrieved .mp3 files from the response")
     coreLibraryObj.validateArrayContainsExpectedValuesFromAnotherArray(arrayOfRetrievedMp3Files, expectedMp3FilesArray);
 }
 

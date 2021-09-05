@@ -1,5 +1,6 @@
 //creating object of core library to utilise its methods
 const coreLibraryObj = require('../coreLibrary/coreLibrary');
+const allureReporter = require('@wdio/allure-reporter').default;
 
 //Page of app containing specific selectors and methods for a specific page
 
@@ -20,7 +21,7 @@ class SbsHindiNewsPage{
     
     //methods to encapsule automation code to interact with the page
     openFinancialSupportScreen(sbsHindiFinancialUrl) {
-        console.log("Open SBS Hindi Financial URL: "+sbsHindiFinancialUrl)
+        allureReporter.addStep("Open SBS Hindi Financial URL: "+sbsHindiFinancialUrl)
         coreLibraryObj.openBrowser(sbsHindiFinancialUrl);
     }
 
@@ -30,28 +31,28 @@ class SbsHindiNewsPage{
     }
     validateTitleOfAudioTrack(expectedTitleOfAudioTrack)
     {   
-        console.log("Comparing actual title: "+this.titleOfAudioTrack.getText() +" with "+expectedTitleOfAudioTrack);    
+        allureReporter.addStep("Comparing actual title: "+this.titleOfAudioTrack.getText() +" with "+expectedTitleOfAudioTrack);    
         expect(this.titleOfAudioTrack).toHaveTextContaining(
             expectedTitleOfAudioTrack);
     }
     clickSubscribeDrodown()
     {
-        console.log("Clicking Subscribe dropdown");
+        allureReporter.addStep("Clicking Subscribe dropdown");
         this.subscribeDrpdwn.click();
     }
     validateApplePodcastIsDisplayedOnClickingSubscribeDrdwn()
     {
-        console.log("validating 'Apple Podcast' is displayed on clicking Subscribe Drpdwn");
+        allureReporter.addStep("validating 'Apple Podcast' is displayed on clicking Subscribe Drpdwn");
         expect(this.applePodcastUnderSubscribe).toBeExisting();
     }
     validateGooglePodcastIsDisplayedOnClickingSubscribeDrdwn()
     {
-        console.log("validating 'Google Podcast' is displayed on clicking Subscribe Drpdwn");
+        allureReporter.addStep("validating 'Google Podcast' is displayed on clicking Subscribe Drpdwn");
         expect(this.googlePodcastUnderSubscribe).toBeExisting();
     }
     clickAudioIcon()
     {
-        console.log("Clicking Audio icon");
+        allureReporter.addStep("Clicking Audio icon");
         this.audioIcon.click();
     }
     waitForAudioPlayerPauseIcon()
@@ -60,12 +61,12 @@ class SbsHindiNewsPage{
     }
     validateAudioPlayerPauseIconIsPresent()
     {
-        console.log("Validating Audio player/pause icon is present for the Audio");
+        allureReporter.addStep("Validating Audio player/pause icon is present for the Audio");
         expect(this.audioPlayerPauseIcon).toBeExisting();
     }
     validateMuteUnmuteIconIsPresent()
     {
-        console.log("Validating Mute/Unmute icon is present for the Audio");
+        allureReporter.addStep("Validating Mute/Unmute icon is present for the Audio");
         expect(this.muteUnmuteIcon).toBeExisting();
     }
     waitUntilAudioIsStarted()
@@ -74,53 +75,53 @@ class SbsHindiNewsPage{
     }
     muteAudioForSpecifiedMillisecAndThenUnmute(timeInMs)
     {
-        console.log("Muting Audio for "+timeInMs+" milliseconds");
+        allureReporter.addStep("Muting Audio for "+timeInMs+" milliseconds");
         this.muteUnmuteIcon.click();
         browser.pause(timeInMs);
-        console.log("unmuting Audio");
+        allureReporter.addStep("unmuting Audio");
         this.muteUnmuteIcon.click();
     }
     validateAudioHasAlreadyRunForSpecifiedTime(elapsedTime)
     {
-        console.log("Validating Audio has run for "+elapsedTime);
+        allureReporter.addStep("Validating Audio has run for "+elapsedTime);
         const assert = require('assert');
         assert.ok(this.elapsedTimeOfAudio.getText() >= elapsedTime);
     }
     pauseRunningAudioForSpecifiedMillisec(pauseTimeInMs)
     {
-        console.log("Pausing Audio for "+pauseTimeInMs+" milliseconds");
+        allureReporter.addStep("Pausing Audio for "+pauseTimeInMs+" milliseconds");
         this.audioPlayerPauseIcon.click();
         browser.pause(pauseTimeInMs);
     }
     resumePausedAudio()
     {
-        console.log("Resuming Audio");
+        allureReporter.addStep("Resuming Audio");
         this.audioPlayerPauseIcon.click();
     }
     validateAudioCompletionIsLessThanTheSpecifiedTime(time)
     {
-        console.log("Validating Audio completion is less than "+time);
+        allureReporter.addStep("Validating Audio completion is less than "+time);
         const assert = require('assert');
         assert.ok(this.elapsedTimeOfAudio.getText() <= time)
     }
     click20SecFwdIcon()
     {
-        console.log("Clicking 20 sec Fwd icon for Audio");
+        allureReporter.addStep("Clicking 20 sec Fwd icon for Audio");
         this.TwentySecFwdIcon.click();
     }
     clickLanguageToggleLink()
     {
-        console.log("Clicking language toggle link");
+        allureReporter.addStep("Clicking language toggle link");
         this.languageToggleLink.click();
     }
     validateViewableLanguageListIsPresent()
     {
-        console.log("Validating list exists after clicking language toggle link");
+        allureReporter.addStep("Validating list exists after clicking language toggle link");
         expect(this.viewableLanguageList).toBeExisting();
     }
     getTotalTimeOfAudio()
     {
-        console.log("Getting total time of Audio");
+        allureReporter.addStep("Getting total time of Audio");
         return this.totalTimeOfAudio.getText();
     }
 

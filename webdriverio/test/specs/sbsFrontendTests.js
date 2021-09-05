@@ -1,8 +1,8 @@
 //creating objects of pages to utilise their methods. Page object model is achieved here
+const allureCommandline = require('allure-commandline');
 const sbsHindiNewsPageObj = require('../frontendPageObjects/sbsHindiNewsPage');
-const getApiPageObj = require('../apiPages/getApiPage');
 const frontendTestDataObj = require('../testData/frontendTestData');
-const apiTestDataObj = require('../testData/apiTestData');
+const allureReporter = require('@wdio/allure-reporter').default;
 
 describe("SBS front end automation tests", () => {
     it("Automate the audio player", () => {
@@ -31,19 +31,11 @@ describe("SBS front end automation tests", () => {
         sbsHindiNewsPageObj.validateAudioCompletionIsLessThanTheSpecifiedTime("00:26");/*Audio till here has 
         run for max 25 secs including Webdriverio processing time for the operations*/
         let laterTotalTimeOfAudio=sbsHindiNewsPageObj.getTotalTimeOfAudio();
-        console.log("Validating total time of audio remains the same while audio is running");
+        allureReporter.addStep("Validating total time of audio remains the same while audio is running");
         const assert = require('assert');
         assert.ok(initialTotalTimeOfAudio===laterTotalTimeOfAudio);//Validating total time of audio remains the same while audio is running
         sbsHindiNewsPageObj.clickLanguageToggleLink();
         sbsHindiNewsPageObj.validateViewableLanguageListIsPresent();
-        
     })
 }); 
 
-describe("SBS back end API automation tests", () => {
-    it("Get all .mp3 audio files and validate the response", () => {
-        let response=getApiPageObj.retrieveResponseOfGetApiWithOnlyEndpoint(apiTestDataObj.apiEndpoint);
-        arrayOfRetrievedMp3Files=getApiPageObj.retrieveAllMp3FilesFromResponseInArray(response);  
-        getApiPageObj.validateGivenMp3FileExistsInArrayOfRetrievedFiles(arrayOfRetrievedMp3Files, apiTestDataObj.expectedMp3FilesArray);  
-    }) 
-});

@@ -1,4 +1,4 @@
-
+const allureReporter = require('@wdio/allure-reporter').default;
 class CoreLibrary{
     openBrowser(url)
     {
@@ -10,7 +10,7 @@ class CoreLibrary{
     const assert = require('assert');
     for(let i=0;i<expectedValuesArray.length;i++)
         {
-            console.log("Checking if "+expectedValuesArray[i]+ " value exists in array "+array);
+            allureReporter.addStep("Checking if "+expectedValuesArray[i]+ " value exists in array "+array);
             assert.ok(array.includes(expectedValuesArray[i]));
         }
     }
